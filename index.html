@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiếng Anh 11 - Unit 1: Lesson 1 (A long and healthy life)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --success: #16a34a;
+            --error: #dc2626;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        /* Tabs điều hướng 5 phần */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        h2.section-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        /* Style cho từ vựng (Phần 1) */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .vocab-word {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .vocab-ipa {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        /* Câu hỏi chung */
+        .question-box {
+            margin-bottom: 20px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            margin-bottom: 8px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .option-label input {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 180px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .score-board {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tiếng Anh 11 - Global Success</h1>
+    <div class="subtitle">Unit 1: Family Life | Lesson 1: A long and healthy life</div>
+
+    <!-- Thanh chuyển đổi 5 phần -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">1. Ôn từ vựng</button>
+        <button class="tab-btn" onclick="switchTab(1)">2. Luyện tập từ vựng</button>
+        <button class="tab-btn" onclick="switchTab(2)">3. Luyện tập thì & Ngữ pháp</button>
+        <button class="tab-btn" onclick="switchTab(3)">4. Sắp xếp & Điền câu</button>
+        <button class="tab-btn" onclick="switchTab(4)">5. Viết đoạn văn</button>
+    </div>
+
+    <!-- PHẦN 1: ÔN TỪ VỰNG -->
+    <div class="section-content active">
+        <h2 class="section-title">Phần 1: Ôn tập từ vựng trọng tâm</h2>
+        <div class="vocab-grid">
+            <div class="vocab-card">
+                <div class="vocab-word">(to) work out</div>
+                <div class="vocab-ipa">/wɜːk aʊt/</div>
+                <div><b>Nghĩa:</b> Tập luyện (thể hình, thể thao)</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">(be) full of</div>
+                <div class="vocab-ipa">/fʊl əv/</div>
+                <div><b>Nghĩa:</b> Tràn đầy (năng lượng, sức sống)</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">diet (n)</div>
+                <div class="vocab-ipa">/ˈdaɪ.ət/</div>
+                <div><b>Nghĩa:</b> Chế độ ăn uống</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">balanced (adj)</div>
+                <div class="vocab-ipa">/ˈbælənst/</div>
+                <div><b>Nghĩa:</b> Cân bằng</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">fit (adj)</div>
+                <div class="vocab-ipa">/fɪt/</div>
+                <div><b>Nghĩa:</b> Cân đối, khỏe mạnh</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHẦN 2: LUYỆN TẬP TỪ VỰNG -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 2: Luyện tập từ vựng (Trắc nghiệm định nghĩa)</h2>
+        <div id="vocabQuizContainer"></div>
+        <button class="btn-submit" onclick="checkVocabQuiz()">Kiểm tra phần từ vựng</button>
+    </div>
+
+    <!-- PHẦN 3: LUYỆN TẬP THÌ & NGỮ PHÁP -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 3: Luyện tập Thì (Quá khứ đơn & Hiện tại hoàn thành)</h2>
+        <div id="grammarQuizContainer"></div>
+        <button class="btn-submit" onclick="checkGrammarQuiz()">Kiểm tra phần Ngữ pháp</button>
+    </div>
+
+    <!-- PHẦN 4: SẮP XẾP & ĐIỀN CÂU -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 4: Hoàn thành câu theo ngữ cảnh bài đọc</h2>
+        <div id="fillQuizContainer"></div>
+        <button class="btn-submit" onclick="checkFillQuiz()">Kiểm tra phần Điền câu</button>
+    </div>
+
+    <!-- PHẦN 5: VIẾT ĐOẠN VĂN -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 5: Viết đoạn văn ứng dụng</h2>
+        <p><b>Yêu cầu:</b> Viết một đoạn văn ngắn (từ 50 - 70 từ) bằng tiếng Anh miêu tả cách bạn giữ gìn vóc dáng và sức khỏe (Gợi ý dùng các cụm từ: <i>work out, balanced diet, stay up late, regular exercise</i>).</p>
+        <textarea id="paragraphInput" placeholder="Nhập đoạn văn của bạn vào đây..."></textarea>
+        <button class="btn-submit" onclick="submitParagraph()">Nộp bài viết</button>
+        <div id="writingFeedback" class="feedback" style="margin-top: 15px; display: none; background: #e0f2fe; color: #0369a1;"></div>
+    </div>
+
+</div>
+
+<script>
+    // Chuyển tab
+    function switchTab(index) {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.section-content');
+        
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+            contents[i].classList.toggle('active', i === index);
+        });
+    }
+
+    // Dữ liệu Phần 2: Từ vựng
+    const vocabData = [
+        {
+            q: "1. What does the phrase '(to) work out' mean?",
+            options: ["Ăn quá nhiều đồ ngọt", "Tập luyện thể thao để cải thiện cơ thể", "Thức khuya làm việc", "Uống nhiều nước"],
+            answer: 1,
+            exp: "Đúng! Work out có nghĩa là tập luyện thể hình/thể thao."
+        },
+        {
+            q: "2. Choose the correct definition of a 'balanced diet':",
+            options: ["A diet with only fast food", "A combination of correct types and amounts of food", "Not eating anything all day", "Eating late in the evening"],
+            answer: 1,
+            exp: "Đúng! Balanced diet là chế độ ăn cân bằng các nhóm chất."
+        }
+    ];
+
+    // Dữ liệu Phần 3: Ngữ pháp (Quá khứ đơn vs Hiện tại hoàn thành từ slide)
+    const grammarData = [
+        {
+            q: "1. In the past, Nam (eat) _______ a lot of fast food.",
+            options: ["eat", "ate", "has eaten", "eats"],
+            answer: 1,
+            exp: "Dùng thì Quá khứ đơn (ate) vì có cụm từ chỉ quá khứ 'In the past'."
+        },
+        {
+            q: "2. He _______ (start) eating healthy food since last summer.",
+            options: ["starts", "started", "has started", "is starting"],
+            answer: 2,
+            exp: "Dùng Hiện tại hoàn thành (has started) vì có từ 'since' và hành động kéo dài từ quá khứ."
+        },
+        {
+            q: "3. His grandfather _______ just celebrate his 90th birthday.",
+            options: ["has just celebrated", "celebrated", "celebrates", "is celebrating"],
+            answer: 0,
+            exp: "Dùng Hiện tại hoàn thành với 'just' để diễn tả hành động vừa mới xảy ra."
+        }
+    ];
+
+    // Dữ liệu Phần 4: Điền câu / Cụm từ (Task 3 trong slide)
+    const fillData = [
+        {
+            q: "1. Having the strength and enthusiasm we need: full of _______",
+            options: ["energy", "diet", "habits", "exercise"],
+            answer: 0,
+            exp: "Cụm từ chuẩn từ bài học: 'full of energy' (tràn đầy năng lượng)."
+        },
+        {
+            q: "2. Things we often do that are not good for our health: bad _______",
+            options: ["diets", "habits", "workouts", "energies"],
+            answer: 1,
+            exp: "Cụm từ chuẩn: 'bad habits' (thói quen xấu)."
+        },
+        {
+            q: "3. Physical activity we do frequently to stay healthy: regular _______",
+            options: ["diet", "food", "exercise", "sleep"],
+            answer: 2,
+            exp: "Cụm từ chuẩn: 'regular exercise' (tập thể dục đều đặn)."
+        }
+    ];
+
+    // Render dữ liệu ra HTML
+    function loadQuizzes() {
+        // Render Phần 2
+        let vHtml = '';
+        vocabData.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `
+                <li class="option-item"><label class="option-label"><input type="radio" name="vocab${idx}" value="${oi}">${o}</label></li>
+            `).join('');
+            vHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="vExp${idx}"></div></div>`;
+        });
+        document.getElementById('vocabQuizContainer').innerHTML = vHtml;
+
+        // Render Phần 3
+        let gHtml = '';
+        grammarData.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `
+                <li class="option-item"><label class="option-label"><input type="radio" name="gram${idx}" value="${oi}">${o}</label></li>
+            `).join('');
+            gHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="gExp${idx}"></div></div>`;
+        });
+        document.getElementById('grammarQuizContainer').innerHTML = gHtml;
+
+        // Render Phần 4
+        let fHtml = '';
+        fillData.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `
+                <li class="option-item"><label class="option-label"><input type="radio" name="fill${idx}" value="${oi}">${o}</label></li>
+            `).join('');
+            fHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="fExp${idx}"></div></div>`;
+        });
+        document.getElementById('fillQuizContainer').innerHTML = fHtml;
+    }
+
+    // Hàm chấm điểm Phần 2
+    function checkVocabQuiz() {
+        vocabData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="vocab${idx}"]:checked`);
+            const exp = document.getElementById(`vExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct';
+                exp.innerHTML = `✅ Chính xác! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect';
+                exp.innerHTML = `❌ Chưa chính xác. ${item.exp}`;
+            }
+        });
+    }
+
+    // Hàm chấm điểm Phần 3
+    function checkGrammarQuiz() {
+        grammarData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="gram${idx}"]:checked`);
+            const exp = document.getElementById(`gExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct';
+                exp.innerHTML = `✅ Chính xác! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect';
+                exp.innerHTML = `❌ Chưa chính xác. ${item.exp}`;
+            }
+        });
+    }
+
+    // Hàm chấm điểm Phần 4
+    function checkFillQuiz() {
+        fillData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="fill${idx}"]:checked`);
+            const exp = document.getElementById(`fExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct';
+                exp.innerHTML = `✅ Chính xác! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect';
+                exp.innerHTML = `❌ Chưa chính xác. ${item.exp}`;
+            }
+        });
+    }
+
+    // Xử lý nộp bài viết (Phần 5)
+    function submitParagraph() {
+        const text = document.getElementById('paragraphInput').value.trim();
+        const fb = document.getElementById('writingFeedback');
+        fb.style.display = 'block';
+        if (text.length < 20) {
+            fb.className = 'feedback incorrect';
+            fb.innerHTML = `⚠️ Đoạn văn quá ngắn. Hãy viết ít nhất 50 từ và cố gắng dùng các từ khóa như 'balanced diet' hoặc 'work out'.`;
+        } else {
+            fb.className = 'feedback correct';
+            fb.innerHTML = `🎉 Đã ghi nhận bài viết của bạn! Đoạn văn có độ dài tốt (${text.split(/\s+/).length} từ). Giáo viên sẽ chấm phần này trực tiếp.`;
+        }
+    }
+
+    loadQuizzes();
+</script>
+
+</body>
+</html>
