@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiếng Anh 11 - Unit 1: Lesson 1 (A long and healthy life)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --success: #16a34a;
+            --error: #dc2626;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        /* Tabs điều hướng */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #475569;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        h2.section-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .vocab-word {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .vocab-ipa {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+
+        .question-box {
+            margin-bottom: 20px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            margin-bottom: 8px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary);
+            background: #f0fdf4;
+        }
+
+        .option-label input {
+            margin-right: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .hint-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .sub-heading {
+            font-weight: bold;
+            color: #334155;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            border-left: 3px solid var(--primary);
+            padding-left: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tiếng Anh 11 - Global Success</h1>
+    <div class="subtitle">Unit 1: Family Life | Lesson 1: A long and healthy life</div>
+
+    <!-- Thanh tab 5 phần -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(0)">1. Ôn từ vựng (5 từ)</button>
+        <button class="tab-btn" onclick="switchTab(1)">2. Luyện từ vựng (5 câu)</button>
+        <button class="tab-btn" onclick="switchTab(2)">3. Ngữ pháp (10 câu)</button>
+        <button class="tab-btn" onclick="switchTab(3)">4. Bài đọc (T/F, Điền từ, Hỏi đáp)</button>
+        <button class="tab-btn" onclick="switchTab(4)">5. Viết đoạn văn (Có gợi ý)</button>
+    </div>
+
+    <!-- PHẦN 1: ÔN TỪ VỰNG -->
+    <div class="section-content active">
+        <h2 class="section-title">Phần 1: Ôn tập 5 từ vựng trọng tâm</h2>
+        <div class="vocab-grid">
+            <div class="vocab-card">
+                <div class="vocab-word">1. (to) work out</div>
+                <div class="vocab-ipa">/wɜːk aʊt/</div>
+                <div><b>Nghĩa:</b> Tập luyện thể thao</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">2. (be) full of</div>
+                <div class="vocab-ipa">/fʊl əv/</div>
+                <div><b>Nghĩa:</b> Tràn đầy năng lượng</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">3. diet (n)</div>
+                <div class="vocab-ipa">/ˈdaɪ.ət/</div>
+                <div><b>Nghĩa:</b> Chế độ ăn uống</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">4. balanced (adj)</div>
+                <div class="vocab-ipa">/ˈbælənst/</div>
+                <div><b>Nghĩa:</b> Cân bằng</div>
+            </div>
+            <div class="vocab-card">
+                <div class="vocab-word">5. fit (adj)</div>
+                <div class="vocab-ipa">/fɪt/</div>
+                <div><b>Nghĩa:</b> Cân đối, khỏe mạnh</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHẦN 2: LUYỆN TẬP TỪ VỰNG (Đủ 5 câu tương ứng 5 từ) -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 2: Luyện tập từ vựng (Đủ 5 câu hỏi cho 5 từ)</h2>
+        <div id="vocabQuizContainer"></div>
+        <button class="btn-submit" onclick="checkVocabQuiz()">Kiểm tra từ vựng</button>
+    </div>
+
+    <!-- PHẦN 3: NGỮ PHÁP (Đủ 10 câu) -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 3: Luyện tập Thì Quá khứ đơn & Hiện tại hoàn thành (10 câu)</h2>
+        <div id="grammarQuizContainer"></div>
+        <button class="btn-submit" onclick="checkGrammarQuiz()">Kiểm tra Ngữ pháp</button>
+    </div>
+
+    <!-- PHẦN 4: BÀI ĐỌC HIỂU (True/False, Điền từ, Trả lời câu hỏi) -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 4: Bài đọc hiểu tổng hợp</h2>
+        
+        <div class="sub-heading">A. True or False (Đúng hay Sai)</div>
+        <div id="readingTFContainer"></div>
+
+        <div class="sub-heading">B. Fill in the blanks (Điền từ vào chỗ trống theo bài đọc)</div>
+        <div id="readingFillContainer"></div>
+
+        <div class="sub-heading">C. Reading Comprehension Questions (Trả lời câu hỏi)</div>
+        <div id="readingMCContainer"></div>
+
+        <button class="btn-submit" onclick="checkReadingQuiz()">Kiểm tra toàn bộ Bài đọc</button>
+    </div>
+
+    <!-- PHẦN 5: VIẾT ĐOẠN VĂN (Có gợi ý câu mẫu) -->
+    <div class="section-content">
+        <h2 class="section-title">Phần 5: Viết đoạn văn ứng dụng</h2>
+        
+        <div class="hint-box">
+            <b>💡 Gợi ý cấu trúc & Từ vựng tham khảo cho học sinh:</b><br>
+            - <i>Mở đầu:</i> To stay fit and healthy, I always try to maintain good habits. (Để giữ vóc dáng cân đối và khỏe mạnh, tôi luôn cố gắng duy trì thói quen tốt).<br>
+            - <i>Thân đoạn:</i> Every morning, I do regular exercise / work out. I also eat a balanced diet with lots of vegetables and drink enough water.<br>
+            - <i>Kết luận:</i> I have given up bad habits like staying up late to keep full of energy.
+        </div>
+
+        <p><b>Yêu cầu:</b> Viết một đoạn văn ngắn (50-70 từ) miêu tả cách bạn giữ gìn sức khỏe:</p>
+        <textarea id="paragraphInput" placeholder="Viết đoạn văn của bạn ở đây..."></textarea>
+        <button class="btn-submit" onclick="submitParagraph()">Nộp bài viết</button>
+        <div id="writingFeedback" class="feedback" style="margin-top: 15px; display: none;"></div>
+    </div>
+
+</div>
+
+<script>
+    function switchTab(index) {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.section-content');
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+            contents[i].classList.toggle('active', i === index);
+        });
+    }
+
+    // Dữ liệu Phần 2: Đủ 5 câu cho 5 từ vựng
+    const vocabData = [
+        { q: "1. Meaning of '(to) work out':", options: ["Ăn vặt", "Tập luyện thể thao", "Ngủ sớm", "Uống nước ngọt"], answer: 1, exp: "Work out là tập luyện thể thao." },
+        { q: "2. Meaning of '(be) full of':", options: ["Tràn đầy (năng lượng)", "Cạn kiệt", "Mệt mỏi", "Buồn ngủ"], answer: 0, exp: "Full of nghĩa là tràn đầy." },
+        { q: "3. Meaning of 'diet':", options: ["Giày thể thao", "Chế độ ăn uống", "Bài tập về nhà", "Giờ giấc"], answer: 1, exp: "Diet là chế độ ăn uống." },
+        { q: "4. Meaning of 'balanced':", options: ["Thiếu thốn", "Cân bằng", "Nặng nề", "Độc hại"], answer: 1, exp: "Balanced có nghĩa là cân bằng." },
+        { q: "5. Meaning of 'fit':", options: ["Ốm yếu", "Cân đối, khỏe mạnh", "Già nua", "Béo phì"], answer: 1, exp: "Fit nghĩa là cân đối, khỏe mạnh." }
+    ];
+
+    // Dữ liệu Phần 3: Đủ 10 câu ngữ pháp
+    const grammarData = [
+        { q: "1. In the past, Nam (eat) _______ a lot of fast food.", options: ["eat", "ate", "has eaten", "eats"], answer: 1, exp: "Có 'In the past' dùng Quá khứ đơn (ate)." },
+        { q: "2. He _______ (start) eating healthy food since last summer.", options: ["starts", "started", "has started", "is starting"], answer: 2, exp: "Có 'since' dùng Hiện tại hoàn thành (has started)." },
+        { q: "3. His grandfather _______ just celebrate his 90th birthday.", options: ["has just celebrated", "celebrated", "celebrates", "is celebrating"], answer: 0, exp: "Dùng Hiện tại hoàn thành với 'just'." },
+        { q: "4. I _______ (visit) my grandfather during my last summer holiday.", options: ["visit", "visited", "have visited", "am visiting"], answer: 1, exp: "Có 'last summer holiday' dùng Quá khứ đơn (visited)." },
+        { q: "5. We _______ (already/learn) a lot of important life lessons.", options: ["learn", "learned", "have already learnt", "are learning"], answer: 2, exp: "Có 'already' dùng Hiện tại hoàn thành." },
+        { q: "6. She _______ (not/eat) fast food for two months.", options: ["didn't eat", "doesn't eat", "hasn't eaten", "wasn't eating"], answer: 2, exp: "Có khoảng thời gian 'for two months' dùng Hiện tại hoàn thành." },
+        { q: "7. My father _______ (stop) smoking last year.", options: ["stops", "stopped", "has stopped", "is stopping"], answer: 1, exp: "Có 'last year' dùng Quá khứ đơn (stopped)." },
+        { q: "8. They _______ (be) close friends since they were children.", options: ["are", "were", "have been", "had been"], answer: 2, exp: "Có mệnh đề 'since they were children' chia Hiện tại hoàn thành." },
+        { q: "9. Look! He _______ (do) morning exercises in the park.", options: ["does", "did", "has done", "is doing"], answer: 3, exp: "Có từ 'Look!' chia Hiện tại tiếp diễn." },
+        { q: "10. How long _______ you _______ (live) in this city?", options: ["did / live", "have / lived", "do / live", "are / living"], answer: 1, exp: "Hỏi về khoảng thời gian với 'How long' dùng Hiện tại hoàn thành." }
+    ];
+
+    // Dữ liệu Phần 4: 3 phần (T/F, Điền từ, Trả lời câu hỏi)
+    const readingTF = [
+        { q: "1. Nam has always had healthy habits since he was young.", options: ["True", "False"], answer: 1, exp: "False: Trước đây Nam ăn nhiều đồ ăn nhanh và thức khuya." },
+        { q: "2. Nam learned about the importance of exercise from his grandfather.", options: ["True", "False"], answer: 0, exp: "True: Nam học được từ người ông 90 tuổi của mình." }
+    ];
+
+    const readingFill = [
+        { q: "1. Nam has stopped eating fast food and given up bad _______.", options: ["habits", "diets", "foods", "sports"], answer: 0, exp: "Cụm từ trong bài: 'bad habits' (thói quen xấu)." },
+        { q: "2. His grandfather is 90 years old, but he is still full of _______.", options: ["energy", "chips", "pain", "fat"], answer: 0, exp: "Cụm từ trong bài: 'full of energy' (tràn đầy năng lượng)." }
+    ];
+
+    const readingMC = [
+        { q: "1. Why did Nam change his lifestyle?", options: ["Because of his grandfather", "Because of a doctor", "Because of Mark", "Because of his school"], answer: 0, exp: "Nam thay đổi sau kỳ nghỉ hè thăm ông." },
+        { q: "2. What does Nam's grandfather do every morning?", options: ["Stays up late", "Does exercise", "Eats burgers", "Watches TV"], answer: 1, exp: "Ông tập thể dục mỗi buổi sáng." }
+    ];
+
+    function loadQuizzes() {
+        // Phần 2
+        let vHtml = '';
+        vocabData.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="vocab${idx}" value="${oi}">${o}</label></li>`).join('');
+            vHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="vExp${idx}"></div></div>`;
+        });
+        document.getElementById('vocabQuizContainer').innerHTML = vHtml;
+
+        // Phần 3
+        let gHtml = '';
+        grammarData.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="gram${idx}" value="${oi}">${o}</label></li>`).join('');
+            gHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="gExp${idx}"></div></div>`;
+        });
+        document.getElementById('grammarQuizContainer').innerHTML = gHtml;
+
+        // Phần 4 - TF
+        let tfHtml = '';
+        readingTF.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="tf${idx}" value="${oi}">${o}</label></li>`).join('');
+            tfHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="tfExp${idx}"></div></div>`;
+        });
+        document.getElementById('readingTFContainer').innerHTML = tfHtml;
+
+        // Phần 4 - Fill
+        let fHtml = '';
+        readingFill.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="rfill${idx}" value="${oi}">${o}</label></li>`).join('');
+            fHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="rfExp${idx}"></div></div>`;
+        });
+        document.getElementById('readingFillContainer').innerHTML = fHtml;
+
+        // Phần 4 - MC
+        let mcHtml = '';
+        readingMC.forEach((item, idx) => {
+            let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="rmc${idx}" value="${oi}">${o}</label></li>`).join('');
+            mcHtml += `<div class="question-box"><div class="question-title">${item.q}</div><ul class="options-list">${opts}</ul><div class="feedback" id="rmcExp${idx}"></div></div>`;
+        });
+        document.getElementById('readingMCContainer').innerHTML = mcHtml;
+    }
+
+    function checkVocabQuiz() {
+        vocabData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="vocab${idx}"]:checked`);
+            const exp = document.getElementById(`vExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct'; exp.innerHTML = `✅ Chính xác! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Chưa đúng. ${item.exp}`;
+            }
+        });
+    }
+
+    function checkGrammarQuiz() {
+        grammarData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="gram${idx}"]:checked`);
+            const exp = document.getElementById(`gExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct'; exp.innerHTML = `✅ Chính xác! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Chưa đúng. ${item.exp}`;
+            }
+        });
+    }
+
+    function checkReadingQuiz() {
+        readingTF.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="tf${idx}"]:checked`);
+            const exp = document.getElementById(`tfExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct'; exp.innerHTML = `✅ Đúng! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Sai. ${item.exp}`;
+            }
+        });
+        readingFill.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="rfill${idx}"]:checked`);
+            const exp = document.getElementById(`rfExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct'; exp.innerHTML = `✅ Đúng! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Sai. ${item.exp}`;
+            }
+        });
+        readingMC.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="rmc${idx}"]:checked`);
+            const exp = document.getElementById(`rmcExp${idx}`);
+            exp.style.display = 'block';
+            if (selected && parseInt(selected.value) === item.answer) {
+                exp.className = 'feedback correct'; exp.innerHTML = `✅ Đúng! ${item.exp}`;
+            } else {
+                exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Sai. ${item.exp}`;
+            }
+        });
+    }
+
+    function submitParagraph() {
+        const text = document.getElementById('paragraphInput').value.trim();
+        const fb = document.getElementById('writingFeedback');
+        fb.style.display = 'block';
+        if (text.length < 20) {
+            fb.className = 'feedback incorrect';
+            fb.innerHTML = `⚠️ Đoạn văn quá ngắn. Hãy viết từ 50-70 từ dựa vào các câu gợi ý phía trên nhé!`;
+        } else {
+            fb.className = 'feedback correct';
+            fb.innerHTML = `🎉 Đã ghi nhận bài viết của bạn (${text.split(/\s+/).length} từ). Bài viết bám sát gợi ý rất tốt!`;
+        }
+    }
+
+    loadQuizzes();
+</script>
+
+</body>
+</html>
