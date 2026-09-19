@@ -1,4 +1,4 @@
-const lesson2Data = {
+window.lesson2Data = {
     vocabReview: [
         { word: "treatment", ipa: "/ˈtriːtmənt/", mean: "Sự điều trị, phép chữa bệnh" },
         { word: "strength", ipa: "/streŋθ/", mean: "Sức mạnh, thể lực" },
