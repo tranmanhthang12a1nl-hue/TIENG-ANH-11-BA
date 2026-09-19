@@ -8,6 +8,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- NHẠM SẴN CÁC FILE DỮ LIỆU BÀI HỌC Ở ĐÂY (Sau này có Lesson 3, chỉ cần thêm: <script src="lesson3.js"></script>) -->
+    <script src="lesson1.js"></script>
+    <script src="lesson2.js"></script>
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -416,48 +421,16 @@
         });
     }
 
-    // Cơ chế nạp file JS riêng biệt động (lesson1.js, lesson2.js...)
+    // Hàm chuyển buổi học sử dụng trực tiếp file .js đã khai báo ở thẻ script phía trên
     function changeLesson(lessonId) {
-        let oldScript = document.getElementById('dynamicLessonScript');
-        if (oldScript) oldScript.remove();
-
-        let script = document.createElement('script');
-        script.id = 'dynamicLessonScript';
-        script.src = lessonId + '.js';
-        
-        script.onload = function() {
-            let dataVarName = lessonId + 'Data';
-            if (window[dataVarName]) {
-                currentLessonData = window[dataVarName];
-                loadLessonData(currentLessonData);
-                switchTab(0);
-            } else {
-                alert("Không tìm thấy biến dữ liệu '" + dataVarName + "' trong file!");
-            }
-        };
-
-        script.onerror = function() {
-            // Phòng hờ nếu tên file viết hoa chữ cái đầu (Lesson1.js)
-            let backupScript = document.createElement('script');
-            backupScript.id = 'dynamicLessonScript';
-            let capitalizedId = lessonId.charAt(0).toUpperCase() + lessonId.slice(1);
-            backupScript.src = capitalizedId + '.js';
-            
-            backupScript.onload = function() {
-                let dataVarName = lessonId + 'Data';
-                if (window[dataVarName]) {
-                    currentLessonData = window[dataVarName];
-                    loadLessonData(currentLessonData);
-                    switchTab(0);
-                }
-            };
-            backupScript.onerror = function() {
-                alert(`Không tìm thấy file dữ liệu "${lessonId}.js" trên GitHub! Bạn hãy kiểm tra lại tên file.`);
-            };
-            document.head.appendChild(backupScript);
-        };
-
-        document.head.appendChild(script);
+        let dataVarName = lessonId + 'Data'; //lesson1Data hoặc lesson2Data
+        if (window[dataVarName]) {
+            currentLessonData = window[dataVarName];
+            loadLessonData(currentLessonData);
+            switchTab(0);
+        } else {
+            alert("Không tìm thấy dữ liệu cho buổi học này!");
+        }
     }
 
     function loadLessonData(data) {
@@ -625,7 +598,7 @@
             const sel = document.querySelector(`input[name="rmc${idx}"]:checked`);
             const exp = document.getElementById(`rmcExp${idx}`);
             exp.style.display = 'block';
-            if (sel && parseInt(sel.value) === item.answer) { count++; exp.className = 'feedback correct'; exp.innerHTML = `✅ Đúng! ${item.exp}`; }
+            if (sel && parseInt(sel.value) === item.answer) { count++; exp.className, 'feedback correct'; exp.innerHTML = `✅ Đúng! ${item.exp}`; }
             else { exp.className = 'feedback incorrect'; exp.innerHTML = `❌ Sai. ${item.exp}`; }
         });
         addHistory("Bài đọc", `${count}/${total} câu`);
@@ -645,7 +618,7 @@
         }
     }
 
-    // Tự động nạp Lesson 1 mặc định khi mở trang
+    // Khởi chạy mặc định Buổi 1 khi mở trang
     changeLesson('lesson1');
 </script>
 
