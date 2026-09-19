@@ -206,10 +206,15 @@
 
         <div class="lesson-select-box">
             <label for="lessonSelect">📅 Chọn Buổi Học:</label>
-            <select id="lessonSelect" onchange="changeLesson(this.value)">
-                <option value="lesson1">Unit 1 - Lesson 1: A long & healthy life</option>
-                <option value="lesson2">Unit 1 - Lesson 2: Family Stories (Sắp ra mắt)</option>
-            </select>
+           function changeLesson(lessonId) {
+                if (lessonId === 'lesson1') {
+                    loadLessonData(lesson1Data);
+                    switchTab(0);
+                } else if (lessonId === 'lesson2') {
+                    loadLessonData(lesson2Data); // Nạp dữ liệu Buổi 2
+                    switchTab(0);
+                }
+            }
         </div>
 
         <div class="timer-box">
