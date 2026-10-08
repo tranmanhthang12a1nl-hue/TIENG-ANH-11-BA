@@ -393,24 +393,37 @@
         }
     }
 
-    function addHistory(sectionName, scoreText) {
-        attemptCounts[sectionName]++;
-        let times = attemptCounts[sectionName];
-        let now = new Date().toLocaleTimeString();
-        let nowDate = new Date().toLocaleDateString("vi-VN");
-        let historyRecords = JSON.parse(localStorage.getItem('student_history_' + currentStudentName) || '[]');
-        historyRecords.unshift({ date: nowDate, time: now, section: sectionName, score: scoreText, attempt: times });
-        localStorage.setItem('student_history_' + currentStudentName, JSON.stringify(historyRecords));
-
-        if (GOOGLE_SHEET_URL) {
-            fetch(GOOGLE_SHEET_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name: currentStudentName, section: sectionName, score: scoreText, attempt: times, time: `${nowDate} ${now}` })
-            }).catch(err => console.log(err));
-        }
-        renderHistoryUI();
+   function addHistory(sectionName, scoreText) {
+            attemptCounts[sectionName]++;
+            let times = attemptCounts[sectionName];
+            let now = new Date().toLocaleTimeString();
+            let nowDate = new Date().toLocaleDateString("vi-VN");
+            
+            // Lấy tên Unit và Lesson đang được chọn trên giao diện
+            let lessonSelectEl = document.getElementById('lessonSelect');
+            let currentLessonText = lessonSelectEl.options[lessonSelectEl.selectedIndex].text;
+        
+            let historyRecords = JSON.parse(localStorage.getItem('student_history_' + currentStudentName) || '[]');
+            historyRecords.unshift({ date: nowDate, time: now, lesson: currentLessonText, section: sectionName, score: scoreText, attempt: times });
+            localStorage.setItem('student_history_' + currentStudentName, JSON.stringify(historyRecords));
+        
+            if (GOOGLE_SHEET_URL) {
+                fetch(GOOGLE_SHEET_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name: currentStudentName, 
+                        lesson: currentLessonText, // Truyền thêm tên Unit/Lesson lên Sheet
+                        section: sectionName, 
+                        score: scoreText, 
+                        attempt: times, 
+                        time: `${nowDate} ${now}` 
+                    })
+                }).catch(err => console.log(err));
+    }
+    renderHistoryUI();
+}
     }
 
     function renderHistoryUI() {
