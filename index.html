@@ -24,6 +24,7 @@
     <script src="unit3_lesson3.js"></script>
     <script src="unit4_lesson1.js"></script>
     <script src="unit4_lesson2.js"></script>
+
     <style>
         :root {
             --bg-dark: #0f0a19;
@@ -607,7 +608,7 @@
             👻 Học sinh: Chưa đăng nhập
         </div>
 
-        <!-- BỘ CHỌN BÀI HỌC 2 CẤP: UNIT & LESSON -->
+        <!-- BỘ CHỌN BÀI HỌC 2 CẤP (UNIT & LESSON) -->
         <div class="unit-lesson-selector">
             <div class="select-group">
                 <label for="unitSelect">🎃 Chọn Unit:</label>
@@ -734,7 +735,7 @@
 </div>
 
 <script>
-    // CẤU TRÚC DANH MỤC UNIT & LESSON GỌN GÀNG
+    // CẤU TRÚC DANH MỤC UNIT & LESSON GỌN GÀNG (ĐÃ CÓ ĐỦ UNIT 4)
     const UNIT_CATALOG = {
         unit1: [
             { value: "lesson1", label: "Lesson 1: Getting Started - A long & healthy life" },
@@ -749,12 +750,12 @@
             { value: "unit2_lesson3", label: "Lesson 3: Reading & Speaking - Generations" },
             { value: "unit2_lesson4", label: "Lesson 4: Writing & Culture (Comprehensive)" }
         ],
-       unit3: [
+        unit3: [
             { value: "unit3_lesson1", label: "Lesson 1: Getting Started - Cities of the Future" },
             { value: "unit3_lesson2", label: "Lesson 2: Language & Reading - Smart Living" },
             { value: "unit3_lesson3", label: "Lesson 3: Speaking & Discussion - Future Metropolises" }
         ],
-       unit4: [
+        unit4: [
             { value: "unit4_lesson1", label: "Lesson 1: Pronunciation - Elision of Vowels" },
             { value: "unit4_lesson2", label: "Lesson 2: Language & Culture - Gerunds & ASEAN" }
         ]
@@ -767,7 +768,7 @@
     let currentStudentName = "";
     let currentLessonData = null; 
     let currentScrambleList = []; 
-    let scrambleState = []; // Lưu thứ tự các chỉ số từ mà học sinh đã chọn cho từng câu
+    let scrambleState = [];
 
     let attemptCounts = {
         "Ứng dụng từ vựng": 0,
@@ -781,7 +782,6 @@
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyRnusuXVgNXn66J3a2ybPV9F1x_9pLpcSd5I-xepLRkgF__GHdUKchRH_u_EYWXlQk/exec";
 
-    // Xử lý khi chọn Unit -> Cập nhật danh sách Lesson tương ứng
     function onUnitChange(unitKey, targetLessonVal = null) {
         const lessonSelect = document.getElementById('lessonSelect');
         const lessons = UNIT_CATALOG[unitKey] || [];
@@ -917,7 +917,7 @@
         document.querySelectorAll('.content-area .section-pane').forEach((pane, idx) => {
             pane.classList.remove('active');
             if (idx === index) {
-                void pane.offsetWidth; // Kích hoạt lại hiệu ứng chuyển động mượt mà
+                void pane.offsetWidth;
                 pane.classList.add('active');
             }
         });
@@ -935,24 +935,20 @@
         }
     }
 
-    // XÁO TRỘN TỪ CÓ KIỂM SOÁT (Đảm bảo tương thích cả file JS cũ và mới)
     function prepareScrambleList(data) {
-        // Nếu file JS mới có sẵn mảng scrambleQuiz thì ưu tiên dùng, nếu file JS cũ chưa có thì tự động lấy từ listeningQuiz
         let rawSource = data.scrambleQuiz || data.listeningQuiz || [];
         return rawSource.slice(0, 10).map((item, idx) => {
             let sentence = item.text.trim();
             let hint = item.hint || (item.options ? item.options[item.answer] : "Nghe và sắp xếp thành câu đúng");
             let words = sentence.split(/\s+/);
             
-            // Tạo mảng các thẻ từ và xáo trộn vị trí
             let pool = words.map((w, wIdx) => ({ id: wIdx, word: w }));
             for (let i = pool.length - 1; i > 0; i--) {
-                let j = (i * 7 + idx * 3 + 5) % (i + 1); // Xáo trộn cố định để khớp khi F5
+                let j = (i * 7 + idx * 3 + 5) % (i + 1);
                 let temp = pool[i];
                 pool[i] = pool[j];
                 pool[j] = temp;
             }
-            // Nếu vô tình mảng xáo trộn vẫn trùng thứ tự gốc thì đảo nhẹ
             if (pool.length > 1 && pool.map(p => p.word).join(' ') === sentence) {
                 let temp = pool[0]; pool[0] = pool[pool.length - 1]; pool[pool.length - 1] = temp;
             }
@@ -1005,7 +1001,6 @@
         saveStudentProgress();
     }
 
-    // LƯU & PHỤC HỒI TRẠNG THÁI (AUTO-SAVE)
     function saveStudentProgress() {
         if (!currentStudentName || !currentLessonData) return;
         
@@ -1048,14 +1043,12 @@
     }
 
     function loadLessonData(data) {
-        // 1. Từ vựng
         let revHtml = '';
         data.vocabReview.forEach(item => {
             revHtml += `<div class="vocab-card"><div class="vocab-word">${item.word}</div><div class="vocab-ipa">${item.ipa}</div><div class="vocab-mean">${item.mean}</div></div>`;
         });
         document.getElementById('vocabReviewContainer').innerHTML = revHtml;
 
-        // 2. Điền từ ứng dụng
         let appHtml = '';
         data.appliedVocab.forEach((item, idx) => {
             let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="appVocab${idx}" value="${oi}" onchange="saveStudentProgress()">${o}</label></li>`).join('');
@@ -1063,7 +1056,6 @@
         });
         document.getElementById('appliedVocabContainer').innerHTML = appHtml;
 
-        // 3. Trắc nghiệm từ vựng
         let vHtml = '';
         data.vocabQuiz.forEach((item, idx) => {
             let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="vocab${idx}" value="${oi}" onchange="saveStudentProgress()">${o}</label></li>`).join('');
@@ -1071,7 +1063,6 @@
         });
         document.getElementById('vocabQuizContainer').innerHTML = vHtml;
 
-        // 4. Bài nghe hiểu
         let lHtml = '';
         data.listeningQuiz.forEach((item, idx) => {
             let opts = item.options.map((o, oi) => `<li class="option-item"><label class="option-label"><input type="radio" name="listening${idx}" value="${oi}" onchange="saveStudentProgress()">${o}</label></li>`).join('');
@@ -1092,7 +1083,6 @@
         });
         document.getElementById('listeningQuizContainer').innerHTML = lHtml;
 
-        // 5. Nghe & Sắp xếp từ thành câu (Tự động tương thích cả bài cũ và bài mới)
         currentScrambleList = prepareScrambleList(data);
         scrambleState = currentScrambleList.map(() => []);
         let scramHtml = '';
@@ -1113,7 +1103,6 @@
         document.getElementById('scrambleQuizContainer').innerHTML = scramHtml;
         currentScrambleList.forEach((_, idx) => renderScrambleQuestion(idx));
 
-        // 6. Ngữ pháp
         document.getElementById('title-grammar').innerText = `⚡ 6. Luyện tập Ngữ pháp: ${data.grammarTitle}`;
         let gHtml = '';
         data.grammarQuiz.forEach((item, idx) => {
@@ -1122,7 +1111,6 @@
         });
         document.getElementById('grammarQuizContainer').innerHTML = gHtml;
 
-        // 7. Bài đọc
         document.getElementById('readingPassageBox').innerHTML = `<b style="color: var(--primary-orange); font-size: 1rem;">📖 ${data.readingTitle}</b><br><br>${data.readingPassage}`;
 
         let tfHtml = '';
@@ -1146,7 +1134,6 @@
         });
         document.getElementById('mcContainer').innerHTML = mcHtml;
 
-        // 8. Viết đoạn
         let guideHtml = `<b>💡 Cấu trúc câu & Ý nghĩa tham khảo:</b><ul>`;
         data.writingGuides.forEach(g => { guideHtml += `<li><b>${g.struct}</b> <br><i>(${g.mean})</i></li>`; });
         guideHtml += `</ul><br><b>🔑 Từ khóa gợi ý:</b> `;
