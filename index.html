@@ -24,6 +24,8 @@
     <script src="unit3_lesson3.js"></script>
     <script src="unit4_lesson1.js"></script>
     <script src="unit4_lesson2.js"></script>
+    <script src="unit4_lesson3.js"></script>
+    <script src="unit4_lesson4.js"></script>
     <script src="unit5_lesson1.js"></script>
     <script src="unit5_lesson2.js"></script>
 
@@ -67,7 +69,7 @@
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 107, 0, 0.12);
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 320px 1fr;
             height: 760px;
             width: 1320px;
             max-width: 100%;
@@ -236,7 +238,7 @@
             font-size: 0.74rem;
             flex-grow: 1;
             overflow-y: auto;
-            max-height: 95px;
+            max-height: 85px;
         }
         .history-title {
             font-weight: bold;
@@ -619,7 +621,7 @@
                     <option value="unit2">Unit 2: The Generation Gap</option>
                     <option value="unit3">Unit 3: Cities of the Future</option>
                     <option value="unit4">Unit 4: ASEAN and Viet Nam</option>
-                    <option value="unit5">Unit 5: Global Warming</option>
+                    <option value="unit5" selected>Unit 5: Global Warming</option>
                 </select>
             </div>
             <div class="select-group">
@@ -738,7 +740,7 @@
 </div>
 
 <script>
-    // CẤU TRÚC DANH MỤC UNIT & LESSON GỌN GÀNG (ĐÃ CÓ ĐỦ UNIT 4)
+    // CẤU TRÚC DANH MỤC UNIT & LESSON (Tích hợp trạng thái Đã làm / Chưa làm)
     const UNIT_CATALOG = {
         unit1: [
             { value: "lesson1", label: "Lesson 1: Getting Started - A long & healthy life" },
@@ -765,8 +767,8 @@
             { value: "unit4_lesson4", label: "Lesson 4: Speaking & Writing - Event Proposals" }
         ],
         unit5: [
-        { value: "unit5_lesson1", label: "Lesson 1: Language & Grammar - Participle Clauses" },
-        { value: "unit5_lesson2", label: "Lesson 2: Reading & Climate Action - COP Summit" }
+            { value: "unit5_lesson1", label: "Lesson 1: Language & Grammar - Participle Clauses" },
+            { value: "unit5_lesson2", label: "Lesson 2: Reading & Climate Action - COP Summit" }
         ]
     };
 
@@ -791,23 +793,70 @@
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyRnusuXVgNXn66J3a2ybPV9F1x_9pLpcSd5I-xepLRkgF__GHdUKchRH_u_EYWXlQk/exec";
 
+    // HÀM CẬP NHẬT TRẠNG THÁI ĐÃ LÀM / CHƯA LÀM CHO DROPDOWN LESSON
+    function updateLessonDropdownLabels() {
+        const unitSelect = document.getElementById('unitSelect');
+        const lessonSelect = document.getElementById('lessonSelect');
+        const unitKey = unitSelect.value;
+        const lessons = UNIT_CATALOG[unitKey] || [];
+        
+        let completedLessons = {};
+        if (currentStudentName) {
+            completedLessons = JSON.parse(localStorage.getItem(`completed_${currentStudentName}`) || '{}');
+        }
+
+        const currentSelectedVal = lessonSelect.value;
+
+        lessonSelect.innerHTML = lessons.map(l => {
+            let isDone = completedLessons[l.value];
+            // Mặc định từ Unit 4 Lesson 1 trở đi (và các bài chưa làm) sẽ hiển thị [🔴 Chưa làm] nếu chưa nộp bài
+            let statusText = isDone ? " [✅ Đã làm]" : " [🔴 Chưa làm]";
+            let cleanLabel = l.label.replace(" [✅ Đã làm]", "").replace(" [🔴 Chưa làm]", "");
+            return `<option value="${l.value}">${cleanLabel}${statusText}</option>`;
+        }).join('');
+
+        if (currentSelectedVal) {
+            lessonSelect.value = currentSelectedVal;
+        }
+    }
+
+    function markCurrentLessonAsCompleted() {
+        if (!currentStudentName) return;
+        const lessonSelect = document.getElementById('lessonSelect');
+        const currentLessonVal = lessonSelect.value;
+        
+        let completedLessons = JSON.parse(localStorage.getItem(`completed_${currentStudentName}`) || '{}');
+        completedLessons[currentLessonVal] = true;
+        localStorage.setItem(`completed_${currentStudentName}`, JSON.stringify(completedLessons));
+        
+        updateLessonDropdownLabels();
+    }
+
     function onUnitChange(unitKey, targetLessonVal = null) {
         const lessonSelect = document.getElementById('lessonSelect');
         const lessons = UNIT_CATALOG[unitKey] || [];
-        lessonSelect.innerHTML = lessons.map(l => `<option value="${l.value}">${l.label}</option>`).join('');
+        
+        // Đổ danh sách lesson ban đầu
+        let completedLessons = currentStudentName ? JSON.parse(localStorage.getItem(`completed_${currentStudentName}`) || '{}') : {};
+        lessonSelect.innerHTML = lessons.map(l => {
+            let isDone = completedLessons[l.value];
+            let statusText = isDone ? " [✅ Đã làm]" : " [🔴 Chưa làm]";
+            return `<option value="${l.value}">${l.label}${statusText}</option>`;
+        }).join('');
         
         const chosenLesson = targetLessonVal || (lessons[0] ? lessons[0].value : "");
         if (chosenLesson) {
             lessonSelect.value = chosenLesson;
             changeLesson(chosenLesson);
         }
+        updateLessonDropdownLabels();
     }
 
     function getFullLessonTitle() {
         const unitEl = document.getElementById('unitSelect');
         const lessonEl = document.getElementById('lessonSelect');
         const unitName = unitEl.options[unitEl.selectedIndex] ? unitEl.options[unitEl.selectedIndex].text.split(':')[0] : "";
-        const lessonName = lessonEl.options[lessonEl.selectedIndex] ? lessonEl.options[lessonEl.selectedIndex].text : "";
+        const lessonName = lessonEl.options[lessonEl.selectedIndex] ? lessonEl.options[lessonEl.selectedIndex].text.replace(" [✅ Đã làm]", "").replace(" [🔴 Chưa làm]", "") : "";
         return `${unitName} - ${lessonName}`;
     }
 
@@ -836,6 +885,7 @@
         document.getElementById('loginScreen').classList.add('hidden');
         startTimer();
         restoreStudentProgress();
+        updateLessonDropdownLabels();
         renderHistoryUI();
     }
 
@@ -889,6 +939,9 @@
         let historyRecords = JSON.parse(localStorage.getItem('student_history_' + currentStudentName) || '[]');
         historyRecords.unshift({ date: nowDate, time: now, lesson: currentLessonText, section: sectionName, score: scoreText, attempt: times });
         localStorage.setItem('student_history_' + currentStudentName, JSON.stringify(historyRecords));
+
+        // Đánh dấu bài học này đã được làm
+        markCurrentLessonAsCompleted();
 
         if (GOOGLE_SHEET_URL) {
             fetch(GOOGLE_SHEET_URL, {
@@ -1281,8 +1334,8 @@
         }
     }
 
-    // Khởi tạo mặc định Unit 1 - Lesson 1 khi mở trang
-    onUnitChange('unit1', 'lesson1');
+    // Khởi tạo mặc định Unit 5 khi mở trang
+    onUnitChange('unit5', 'unit5_lesson1');
 </script>
 
 </body>
